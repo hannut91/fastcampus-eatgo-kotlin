@@ -1,4 +1,4 @@
-package com.example.demo
+package kr.co.fastcampus.eatgo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
