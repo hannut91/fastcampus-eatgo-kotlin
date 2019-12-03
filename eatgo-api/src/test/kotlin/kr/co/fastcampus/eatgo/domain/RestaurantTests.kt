@@ -8,9 +8,9 @@ internal class RestaurantTests {
     fun creation() {
         val restaurant = Restaurant(1004, "Bob zip", "Seoul")
 
-        assertThat(restaurant.getId()).isEqualTo(1004)
-        assertThat(restaurant.getName()).isEqualTo("Bob zip")
-        assertThat(restaurant.getAddress()).isEqualTo("Seoul")
+        assertThat(restaurant.id).isEqualTo(1004)
+        assertThat(restaurant.name).isEqualTo("Bob zip")
+        assertThat(restaurant.address).isEqualTo("Seoul")
     }
 
     @Test
