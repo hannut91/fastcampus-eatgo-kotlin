@@ -16,6 +16,6 @@ class RestaurantRepositoryImpl : RestaurantRepository {
     }
 
     override fun findById(id: Long): Restaurant? {
-        return restaurants.firstOrNull { it.id.equals(id) }
+        return restaurants.firstOrNull { it.id == id }
     }
 }
