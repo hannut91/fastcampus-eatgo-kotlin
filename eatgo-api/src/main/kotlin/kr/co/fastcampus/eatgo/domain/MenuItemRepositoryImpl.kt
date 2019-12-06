@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class MenuItemRepositoryImpl: MenuItemRepository {
-    private val menuItems = mutableListOf<MenuItem>()
+    private val menuItems = arrayListOf<MenuItem>()
 
     constructor() {
         menuItems.add(MenuItem("Kimchi"))
     }
 
-    override fun findAllByRestaurantId(restaurantId: Long): List<MenuItem> {
+    override fun findAllByRestaurantId(restaurantId: Long): ArrayList<MenuItem> {
         return menuItems
     }
 }

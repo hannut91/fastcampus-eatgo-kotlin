@@ -1,28 +1,52 @@
 package kr.co.fastcampus.eatgo.application
 
+import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository
-import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl
+import kr.co.fastcampus.eatgo.domain.Restaurant
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository
-import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.given
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 
 internal class RestaurantServiceTest {
     private lateinit var restaurantService: RestaurantService
 
+    @Mock
     private lateinit var restaurantRepository: RestaurantRepository
 
+    @Mock
     private lateinit var menuItemRepository: MenuItemRepository
 
     @BeforeEach
     fun setUp() {
-        restaurantRepository = RestaurantRepositoryImpl()
+        MockitoAnnotations.initMocks(this)
 
-        menuItemRepository = MenuItemRepositoryImpl()
+        mockRestaurantRepository()
+        mockMenuItemRepository()
 
-        restaurantService = RestaurantService(restaurantRepository,
-                menuItemRepository)
+        restaurantService = RestaurantService(
+                restaurantRepository, menuItemRepository)
+    }
+
+    private fun mockRestaurantRepository() {
+        val restaurants = arrayListOf<Restaurant>()
+        val restaurant = Restaurant(1004, "Bob zip", "Seoul")
+        restaurants.add(restaurant)
+
+        given(restaurantRepository.findAll()).willReturn(restaurants)
+
+        given(restaurantRepository.findById(1004)).willReturn(restaurant)
+    }
+
+    private fun mockMenuItemRepository() {
+        val menuItems = arrayListOf<MenuItem>()
+        menuItems.add(MenuItem("Kimchi"))
+
+        given(menuItemRepository.findAllByRestaurantId(1004))
+                .willReturn(menuItems)
     }
 
     @Test
