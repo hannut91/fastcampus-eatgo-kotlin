@@ -8,11 +8,11 @@ class Restaurant(
 ) {
     fun getInformation() = "$name in $address"
 
-    fun setMenuItems(menuItems: List<MenuItem>) {
+    fun setMenuItems(menuItems: ArrayList<MenuItem>) {
         menuItems.forEach { addMenuItem(it) }
     }
 
-    private fun addMenuItem(menuItem: MenuItem) {
+    fun addMenuItem(menuItem: MenuItem) {
         menuItems.add(menuItem)
     }
 }

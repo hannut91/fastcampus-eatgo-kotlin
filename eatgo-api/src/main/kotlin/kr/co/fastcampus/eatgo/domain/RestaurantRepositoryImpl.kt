@@ -11,7 +11,7 @@ class RestaurantRepositoryImpl : RestaurantRepository {
         restaurants.add(Restaurant(2020, "Cyber food", "Seoul"))
     }
 
-    override fun findAll(): List<Restaurant> {
+    override fun findAll(): ArrayList<Restaurant> {
         return restaurants
     }
 

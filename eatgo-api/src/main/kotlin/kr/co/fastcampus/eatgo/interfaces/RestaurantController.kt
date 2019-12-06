@@ -13,7 +13,7 @@ class RestaurantController {
     private lateinit var restaurantService: RestaurantService
 
     @GetMapping("/restaurants")
-    fun list(): List<Restaurant> {
+    fun list(): ArrayList<Restaurant> {
         return restaurantService.getRestaurants()
     }
 
