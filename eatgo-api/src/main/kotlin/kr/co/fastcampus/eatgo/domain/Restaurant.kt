@@ -1,10 +1,22 @@
 package kr.co.fastcampus.eatgo.domain
 
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Transient
+
+@Entity
 class Restaurant {
+    @Id
+    @GeneratedValue
     private var id: Long = 0
-    private var name: String
-    private var address: String
+    private var name: String = ""
+    private var address: String = ""
+
+    @Transient
     private var menuItems: ArrayList<MenuItem> = arrayListOf()
+
+    constructor() {}
 
     constructor(name: String, address: String) {
         this.name = name

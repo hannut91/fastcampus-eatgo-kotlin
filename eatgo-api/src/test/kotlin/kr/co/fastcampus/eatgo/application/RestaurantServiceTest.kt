@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import java.util.*
 
 internal class RestaurantServiceTest {
     private lateinit var restaurantService: RestaurantService
@@ -39,7 +40,8 @@ internal class RestaurantServiceTest {
 
         given(restaurantRepository.findAll()).willReturn(restaurants)
 
-        given(restaurantRepository.findById(1004)).willReturn(restaurant)
+        given(restaurantRepository.findById(1004))
+                .willReturn(Optional.of(restaurant))
     }
 
     private fun mockMenuItemRepository() {

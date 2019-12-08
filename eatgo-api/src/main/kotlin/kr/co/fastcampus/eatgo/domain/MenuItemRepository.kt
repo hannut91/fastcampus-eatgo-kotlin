@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.domain
 
-interface MenuItemRepository {
+import org.springframework.data.repository.CrudRepository
+
+interface MenuItemRepository: CrudRepository<MenuItem, Long> {
     fun findAllByRestaurantId(restaurantId: Long): ArrayList<MenuItem>
 }
