@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.interfaces
 
+import com.nhaarman.mockitokotlin2.any
 import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
@@ -7,14 +8,16 @@ import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(RestaurantController::class)
@@ -72,5 +75,17 @@ internal class RestaurantControllerTest {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ))
+    }
+
+    @Test
+    fun create() {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"BeRyong\", \"address\": \"Busan\"}"))
+                .andExpect(status().isCreated)
+                .andExpect(header().string("location", "/restaurants/1234"))
+                .andExpect(content().string("{}"))
+
+        verify(restaurantService).addRestaurant(any())
     }
 }
