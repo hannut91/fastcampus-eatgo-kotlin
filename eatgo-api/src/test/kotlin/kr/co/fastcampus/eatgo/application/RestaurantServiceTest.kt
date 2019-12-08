@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.application
 
+import com.nhaarman.mockitokotlin2.any
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository
 import kr.co.fastcampus.eatgo.domain.Restaurant
@@ -53,14 +54,26 @@ internal class RestaurantServiceTest {
     fun getRestaurants() {
         val restaurants = restaurantService.getRestaurants()
 
-        assertThat(restaurants[0].id).isEqualTo(1004)
+        assertThat(restaurants[0].getId()).isEqualTo(1004)
     }
 
     @Test
     fun getRestaurant() {
         val restaurant = restaurantService.getRestaurant(1004)
 
-        assertThat(restaurant?.id).isEqualTo(1004)
-        assertThat(restaurant?.menuItems?.get(0)?.name).isEqualTo("Kimchi")
+        assertThat(restaurant?.getId()).isEqualTo(1004)
+        assertThat(restaurant?.getMenuItems()?.get(0)?.name).isEqualTo("Kimchi")
+    }
+
+    @Test
+    fun addRestaurant() {
+        val restaurant = Restaurant("BeRyong", "Busan")
+        val saved = Restaurant(1234, "BeRyong", "Busan")
+
+        given(restaurantRepository.save(any())).willReturn(saved)
+
+        val created = restaurantService.addRestaurant(restaurant)
+
+        assertThat(created.getId()).isEqualTo(1234)
     }
 }

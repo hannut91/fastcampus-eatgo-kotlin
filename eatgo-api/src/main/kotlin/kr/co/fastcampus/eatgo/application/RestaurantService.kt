@@ -28,7 +28,8 @@ class RestaurantService {
         return restaurant
     }
 
-    fun getRestaurants(): ArrayList<Restaurant> {
-        return restaurantRepository.findAll()
-    }
+    fun getRestaurants(): ArrayList<Restaurant> = restaurantRepository.findAll()
+
+    fun addRestaurant(restaurant: Restaurant) =
+            restaurantRepository.save(restaurant)
 }
