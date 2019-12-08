@@ -19,7 +19,7 @@ class RestaurantService {
     }
 
     fun getRestaurant(id: Long): Restaurant? {
-        val restaurant = restaurantRepository.findById(id)
+        val restaurant = restaurantRepository.findById(id).orElse(null)
 
         val menuItems = menuItemRepository.findAllByRestaurantId(id)
 
