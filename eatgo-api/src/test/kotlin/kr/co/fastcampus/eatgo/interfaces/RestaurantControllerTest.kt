@@ -32,7 +32,12 @@ internal class RestaurantControllerTest {
     @Test
     fun list() {
         val restaurants = arrayListOf<Restaurant>()
-        restaurants.add(Restaurant(1004, "JOKER House", "Seoul"))
+
+        restaurants.add(Restaurant.Builder()
+                .id(1004)
+                .name("JOKER House")
+                .address("Seoul")
+                .build())
 
         given(restaurantService.getRestaurants()).willReturn(restaurants)
 
@@ -48,10 +53,22 @@ internal class RestaurantControllerTest {
 
     @Test
     fun detail() {
-        val restaurant1 = Restaurant(1004, "JOKER House", "Seoul")
-        restaurant1.addMenuItem(MenuItem("Kimchi"))
+        val restaurant1 = Restaurant.Builder()
+                .id(1004)
+                .name("JOKER House")
+                .address("Seoul")
+                .build()
+        restaurant1.menuItems = arrayListOf(
+                MenuItem.Builder()
+                        .name("Kimchi")
+                        .build()
+        )
 
-        val restaurant2 = Restaurant(2020, "Cyber food", "Seoul")
+        val restaurant2 = Restaurant.Builder()
+                .id(2020)
+                .name("Cyber food")
+                .address("Seoul")
+                .build()
 
         given(restaurantService.getRestaurant(1004)).willReturn(restaurant1)
         given(restaurantService.getRestaurant(2020)).willReturn(restaurant2)
@@ -83,8 +100,11 @@ internal class RestaurantControllerTest {
         given(restaurantService.addRestaurant(any()))
                 .will { invocation: InvocationOnMock ->
                     val restaurant = invocation.getArgument<Restaurant>(0)
-                    Restaurant(1234, restaurant.getName(),
-                            restaurant.getAddress())
+                    Restaurant.Builder()
+                            .id(1234)
+                            .name(restaurant.name)
+                            .address(restaurant.address)
+                            .build()
                 }
 
         mvc.perform(post("/restaurants")

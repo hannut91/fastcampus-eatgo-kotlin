@@ -22,13 +22,18 @@ class RestaurantController {
 
     @PostMapping("/restaurants")
     fun create(@RequestBody resource: Restaurant): ResponseEntity<String> {
-        val name = resource.getName()
-        val address = resource.getAddress()
+        print(resource)
+        val name = resource.name
+        val address = resource.address
 
         val restaurant = restaurantService.addRestaurant(
-                Restaurant(name, address))
+                Restaurant.Builder()
+                        .name(name)
+                        .address(address)
+                        .build()
+        )
 
-        val location = URI("/restaurants/${restaurant.getId()}")
+        val location = URI("/restaurants/${restaurant.id}")
         return ResponseEntity.created(location).body("{}")
     }
 
@@ -37,8 +42,8 @@ class RestaurantController {
             @PathVariable("id") id: Long,
             @RequestBody resource: Restaurant
     ): String {
-        val name = resource.getName()
-        val address = resource.getAddress()
+        val name = resource.name
+        val address = resource.address
         restaurantService.updateRestaurant(id, name, address)
 
         return "{}"

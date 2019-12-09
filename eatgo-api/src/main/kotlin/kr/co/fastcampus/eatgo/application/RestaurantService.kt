@@ -26,7 +26,7 @@ class RestaurantService {
 
         val menuItems = menuItemRepository.findAllByRestaurantId(id)
 
-        restaurant?.setMenuItems(menuItems)
+        restaurant.menuItems = menuItems
 
         return restaurant
     }
