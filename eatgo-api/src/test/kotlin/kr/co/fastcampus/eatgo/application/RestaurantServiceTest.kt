@@ -35,7 +35,12 @@ internal class RestaurantServiceTest {
 
     private fun mockRestaurantRepository() {
         val restaurants = arrayListOf<Restaurant>()
-        val restaurant = Restaurant(1004, "Bob zip", "Seoul")
+        val restaurant = Restaurant.Builder()
+                .id(1004)
+                .name("Bob zip")
+                .address("Seoul")
+                .build()
+
         restaurants.add(restaurant)
 
         given(restaurantRepository.findAll()).willReturn(restaurants)
@@ -46,7 +51,7 @@ internal class RestaurantServiceTest {
 
     private fun mockMenuItemRepository() {
         val menuItems = arrayListOf<MenuItem>()
-        menuItems.add(MenuItem("Kimchi"))
+        menuItems.add(MenuItem.Builder().name("Kimchi").build())
 
         given(menuItemRepository.findAllByRestaurantId(1004))
                 .willReturn(menuItems)
@@ -56,39 +61,53 @@ internal class RestaurantServiceTest {
     fun getRestaurants() {
         val restaurants = restaurantService.getRestaurants()
 
-        assertThat(restaurants[0].getId()).isEqualTo(1004)
+        assertThat(restaurants[0].id).isEqualTo(1004)
     }
 
     @Test
     fun getRestaurant() {
         val restaurant = restaurantService.getRestaurant(1004)
 
-        assertThat(restaurant?.getId()).isEqualTo(1004)
-        assertThat(restaurant?.getMenuItems()?.get(0)?.name).isEqualTo("Kimchi")
+        print(restaurant)
+
+        assertThat(restaurant?.id).isEqualTo(1004)
+        assertThat(restaurant?.menuItems?.get(0)?.name).isEqualTo("Kimchi")
     }
 
     @Test
     fun addRestaurant() {
-        val restaurant = Restaurant("BeRyong", "Busan")
-        val saved = Restaurant(1234, "BeRyong", "Busan")
+        val restaurant = Restaurant.Builder()
+                .name("BeRyong")
+                .address("Busan")
+                .build()
+
+        val saved = Restaurant.Builder()
+                .id(1234)
+                .name("BeRyong")
+                .address("Busan")
+                .build()
 
         given(restaurantRepository.save(any())).willReturn(saved)
 
         val created = restaurantService.addRestaurant(restaurant)
 
-        assertThat(created.getId()).isEqualTo(1234)
+        assertThat(created.id).isEqualTo(1234)
     }
 
     @Test
     fun updateRestaurant() {
-        val restaurant = Restaurant(1004, "Bob zip", "Seoul")
+        val restaurant = Restaurant.Builder()
+                .id(1004)
+                .name("Bob zip")
+                .address("Seoul")
+                .build()
 
         given(restaurantRepository.findById(1004))
                 .willReturn(Optional.of(restaurant))
 
         restaurantService.updateRestaurant(1004, "Sool zip", "Busan")
 
-        assertThat(restaurant.getName()).isEqualTo("Sool zip")
-        assertThat(restaurant.getAddress()).isEqualTo("Busan")
+        assertThat(restaurant.name).isEqualTo("Sool zip")
+        assertThat(restaurant.address).isEqualTo("Busan")
     }
 }
