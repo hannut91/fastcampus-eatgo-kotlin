@@ -78,4 +78,17 @@ internal class RestaurantServiceTest {
 
         assertThat(created.getId()).isEqualTo(1234)
     }
+
+    @Test
+    fun updateRestaurant() {
+        val restaurant = Restaurant(1004, "Bob zip", "Seoul")
+
+        given(restaurantRepository.findById(1004))
+                .willReturn(Optional.of(restaurant))
+
+        restaurantService.updateRestaurant(1004, "Sool zip", "Busan")
+
+        assertThat(restaurant.getName()).isEqualTo("Sool zip")
+        assertThat(restaurant.getAddress()).isEqualTo("Busan")
+    }
 }

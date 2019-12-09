@@ -9,15 +9,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
+import org.mockito.invocation.InvocationOnMock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(RestaurantController::class)
@@ -79,6 +80,13 @@ internal class RestaurantControllerTest {
 
     @Test
     fun create() {
+        given(restaurantService.addRestaurant(any()))
+                .will { invocation: InvocationOnMock ->
+                    val restaurant = invocation.getArgument<Restaurant>(0)
+                    Restaurant(1234, restaurant.getName(),
+                            restaurant.getAddress())
+                }
+
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"BeRyong\", \"address\": \"Busan\"}"))
@@ -87,5 +95,15 @@ internal class RestaurantControllerTest {
                 .andExpect(content().string("{}"))
 
         verify(restaurantService).addRestaurant(any())
+    }
+
+    @Test
+    fun update() {
+        mvc.perform(patch("/restaurants/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"JOKER Bar\", \"address\": \"Busan\"}"))
+                .andExpect(status().isOk)
+
+        verify(restaurantService).updateRestaurant(1004, "JOKER Bar", "Busan")
     }
 }

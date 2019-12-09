@@ -1,8 +1,11 @@
 package kr.co.fastcampus.eatgo.application
 
-import kr.co.fastcampus.eatgo.domain.*
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository
+import kr.co.fastcampus.eatgo.domain.Restaurant
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
 class RestaurantService {
@@ -32,4 +35,13 @@ class RestaurantService {
 
     fun addRestaurant(restaurant: Restaurant) =
             restaurantRepository.save(restaurant)
+
+    @Transactional
+    fun updateRestaurant(id: Long, name: String, address: String): Restaurant? {
+        val restaurant = restaurantRepository.findById(id).orElse(null)
+
+        restaurant.updateInformation(name, address)
+
+        return restaurant
+    }
 }

@@ -25,10 +25,22 @@ class RestaurantController {
         val name = resource.getName()
         val address = resource.getAddress()
 
-        val restaurant = Restaurant(name, address)
-        restaurantService.addRestaurant(restaurant)
+        val restaurant = restaurantService.addRestaurant(
+                Restaurant(name, address))
 
         val location = URI("/restaurants/${restaurant.getId()}")
         return ResponseEntity.created(location).body("{}")
+    }
+
+    @PatchMapping("/restaurants/{id}")
+    fun update(
+            @PathVariable("id") id: Long,
+            @RequestBody resource: Restaurant
+    ): String {
+        val name = resource.getName()
+        val address = resource.getAddress()
+        restaurantService.updateRestaurant(id, name, address)
+
+        return "{}"
     }
 }
