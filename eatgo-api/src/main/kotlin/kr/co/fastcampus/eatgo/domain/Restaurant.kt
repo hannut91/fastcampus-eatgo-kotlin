@@ -37,9 +37,7 @@ class Restaurant {
 
     fun getId() = id
 
-    fun setId(id: Long) {
-        this.id = id
-    }
+    fun setId(id: Long) = run { this.id = id }
 
     fun getName() = name
 
@@ -55,5 +53,10 @@ class Restaurant {
 
     fun addMenuItem(menuItem: MenuItem) {
         menuItems.add(menuItem)
+    }
+
+    fun updateInformation(name: String, address: String) {
+        this.name = name
+        this.address = address
     }
 }
