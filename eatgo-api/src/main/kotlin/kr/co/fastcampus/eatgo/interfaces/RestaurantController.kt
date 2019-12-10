@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import javax.validation.Valid
 
 @CrossOrigin
 @RestController
@@ -21,7 +22,8 @@ class RestaurantController {
             restaurantService.getRestaurant(id)
 
     @PostMapping("/restaurants")
-    fun create(@RequestBody resource: Restaurant): ResponseEntity<String> {
+    fun create(@Valid @RequestBody resource: Restaurant):
+            ResponseEntity<String> {
         print(resource)
         val name = resource.name
         val address = resource.address
@@ -40,7 +42,7 @@ class RestaurantController {
     @PatchMapping("/restaurants/{id}")
     fun update(
             @PathVariable("id") id: Long,
-            @RequestBody resource: Restaurant
+            @Valid @RequestBody resource: Restaurant
     ): String {
         val name = resource.name
         val address = resource.address

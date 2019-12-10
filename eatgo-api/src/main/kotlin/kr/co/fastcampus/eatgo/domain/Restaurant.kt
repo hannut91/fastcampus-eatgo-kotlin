@@ -3,13 +3,18 @@ package kr.co.fastcampus.eatgo.domain
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.validation.constraints.NotEmpty
 
 @Entity
 class Restaurant {
     @Id
     @GeneratedValue
     var id: Long = 0
+    
+    @NotEmpty
     var name: String = ""
+
+    @NotEmpty
     var address: String = ""
     @Transient
     var menuItems: ArrayList<MenuItem> = arrayListOf()

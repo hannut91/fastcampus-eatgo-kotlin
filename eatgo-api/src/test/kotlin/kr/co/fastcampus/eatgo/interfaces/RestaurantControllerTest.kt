@@ -96,7 +96,7 @@ internal class RestaurantControllerTest {
     }
 
     @Test
-    fun create() {
+    fun createWithValidData() {
         given(restaurantService.addRestaurant(any()))
                 .will { invocation: InvocationOnMock ->
                     val restaurant = invocation.getArgument<Restaurant>(0)
@@ -118,12 +118,36 @@ internal class RestaurantControllerTest {
     }
 
     @Test
-    fun update() {
+    fun createWithInvalidData() {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"\", \"address\": \"\"}"))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun updateWithValidData() {
         mvc.perform(patch("/restaurants/1004")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"JOKER Bar\", \"address\": \"Busan\"}"))
                 .andExpect(status().isOk)
 
         verify(restaurantService).updateRestaurant(1004, "JOKER Bar", "Busan")
+    }
+
+    @Test
+    fun updateWithInvalidData() {
+        mvc.perform(patch("/restaurants/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"\", \"address\": \"\"}"))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun updateWithoutName() {
+        mvc.perform(patch("/restaurants/1004")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"\", \"address\": \"Busan\"}"))
+                .andExpect(status().isBadRequest)
     }
 }
