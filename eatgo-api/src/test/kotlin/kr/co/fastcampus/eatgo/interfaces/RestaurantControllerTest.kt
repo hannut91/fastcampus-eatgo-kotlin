@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.any
 import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -52,7 +53,7 @@ internal class RestaurantControllerTest {
     }
 
     @Test
-    fun detail() {
+    fun detailWithExisted() {
         val restaurant1 = Restaurant.Builder()
                 .id(1004)
                 .name("JOKER House")
@@ -93,6 +94,16 @@ internal class RestaurantControllerTest {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ))
+    }
+
+    @Test
+    fun detailWithNotExisted() {
+        given(restaurantService.getRestaurant(404))
+                .willThrow(RestaurantNotFoundException(404))
+
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound)
+                .andExpect(content().string("{}"))
     }
 
     @Test

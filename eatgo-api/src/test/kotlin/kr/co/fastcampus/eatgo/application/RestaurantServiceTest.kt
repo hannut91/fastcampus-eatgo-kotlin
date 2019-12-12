@@ -1,13 +1,11 @@
 package kr.co.fastcampus.eatgo.application
 
 import com.nhaarman.mockitokotlin2.any
-import kr.co.fastcampus.eatgo.domain.MenuItem
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository
-import kr.co.fastcampus.eatgo.domain.Restaurant
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository
+import kr.co.fastcampus.eatgo.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -65,7 +63,7 @@ internal class RestaurantServiceTest {
     }
 
     @Test
-    fun getRestaurant() {
+    fun getRestaurantWithExisted() {
         val restaurant = restaurantService.getRestaurant(1004)
 
         print(restaurant)
@@ -74,7 +72,14 @@ internal class RestaurantServiceTest {
         assertThat(restaurant?.menuItems?.get(0)?.name).isEqualTo("Kimchi")
     }
 
-    @Test
+    @Test()
+    fun getRestaurantWithNotExisted() {
+        assertThrows<RestaurantNotFoundException> {
+            restaurantService.getRestaurant(404)
+        }
+    }
+
+    @Test()
     fun addRestaurant() {
         val restaurant = Restaurant.Builder()
                 .name("BeRyong")
