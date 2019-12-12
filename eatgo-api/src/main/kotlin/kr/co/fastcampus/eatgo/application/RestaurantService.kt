@@ -2,6 +2,7 @@ package kr.co.fastcampus.eatgo.application
 
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository
 import kr.co.fastcampus.eatgo.domain.Restaurant
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +23,8 @@ class RestaurantService {
     }
 
     fun getRestaurant(id: Long): Restaurant? {
-        val restaurant = restaurantRepository.findById(id).orElse(null)
+        val restaurant = restaurantRepository.findById(id)
+                .orElseThrow { RestaurantNotFoundException(id) }
 
         val menuItems = menuItemRepository.findAllByRestaurantId(id)
 
