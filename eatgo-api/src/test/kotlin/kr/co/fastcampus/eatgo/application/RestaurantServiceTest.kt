@@ -66,8 +66,6 @@ internal class RestaurantServiceTest {
     fun getRestaurantWithExisted() {
         val restaurant = restaurantService.getRestaurant(1004)
 
-        print(restaurant)
-
         assertThat(restaurant?.id).isEqualTo(1004)
         assertThat(restaurant?.menuItems?.get(0)?.name).isEqualTo("Kimchi")
     }
