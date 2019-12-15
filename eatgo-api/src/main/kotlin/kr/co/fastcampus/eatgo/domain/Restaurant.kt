@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.domain
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -10,20 +11,21 @@ class Restaurant {
     @Id
     @GeneratedValue
     var id: Long = 0
-    
+
     @NotEmpty
     var name: String = ""
 
     @NotEmpty
     var address: String = ""
     @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     var menuItems: ArrayList<MenuItem> = arrayListOf()
         set(value) = run { field = ArrayList(value) }
 
     val information
         get() = "$name in $address"
 
-    constructor () {}
+    constructor()
 
     constructor(
             id: Long = 0,

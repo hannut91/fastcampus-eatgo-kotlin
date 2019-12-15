@@ -24,7 +24,6 @@ class RestaurantController {
     @PostMapping("/restaurants")
     fun create(@Valid @RequestBody resource: Restaurant):
             ResponseEntity<String> {
-        print(resource)
         val name = resource.name
         val address = resource.address
 
