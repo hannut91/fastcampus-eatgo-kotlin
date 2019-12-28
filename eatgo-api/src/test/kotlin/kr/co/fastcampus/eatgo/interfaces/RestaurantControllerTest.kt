@@ -5,9 +5,9 @@ import kr.co.fastcampus.eatgo.application.RestaurantService
 import kr.co.fastcampus.eatgo.domain.MenuItem
 import kr.co.fastcampus.eatgo.domain.Restaurant
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException
+import kr.co.fastcampus.eatgo.domain.Review
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.mockito.invocation.InvocationOnMock
@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@ExtendWith(SpringExtension::class)
 @WebMvcTest(RestaurantController::class)
 internal class RestaurantControllerTest {
     @Autowired
@@ -53,25 +51,22 @@ internal class RestaurantControllerTest {
 
     @Test
     fun detailWithExisted() {
-        val restaurant1 = Restaurant.Builder()
+        val restaurant = Restaurant.Builder()
                 .id(1004)
                 .name("JOKER House")
                 .address("Seoul")
                 .build()
-        restaurant1.menuItems = arrayListOf(
-                MenuItem.Builder()
-                        .name("Kimchi")
-                        .build()
-        )
-
-        val restaurant2 = Restaurant.Builder()
-                .id(2020)
-                .name("Cyber food")
-                .address("Seoul")
+        val menuItem = MenuItem.Builder().name("Kimchi").build()
+        val review = Review.Builder()
+                .name("Yunseok")
+                .score(3)
+                .description("Great!")
                 .build()
 
-        given(restaurantService.getRestaurant(1004)).willReturn(restaurant1)
-        given(restaurantService.getRestaurant(2020)).willReturn(restaurant2)
+        restaurant.menuItems = arrayListOf(menuItem)
+        restaurant.reviews = arrayListOf(review)
+
+        given(restaurantService.getRestaurant(1004)).willReturn(restaurant)
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk)
@@ -84,14 +79,8 @@ internal class RestaurantControllerTest {
                 .andExpect(content().string(
                         containsString("Kimchi")
                 ))
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk)
                 .andExpect(content().string(
-                        containsString("\"id\":2020")
-                ))
-                .andExpect(content().string(
-                        containsString("\"name\":\"Cyber food\"")
+                        containsString("Great!")
                 ))
     }
 
