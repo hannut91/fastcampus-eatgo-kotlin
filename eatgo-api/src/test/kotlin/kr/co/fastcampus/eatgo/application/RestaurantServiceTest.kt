@@ -1,6 +1,8 @@
 package kr.co.fastcampus.eatgo.application
 
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.verify
 import kr.co.fastcampus.eatgo.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -20,15 +22,19 @@ internal class RestaurantServiceTest {
     @Mock
     private lateinit var menuItemRepository: MenuItemRepository
 
+    @Mock
+    private lateinit var reviewRepository: ReviewRepository
+
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
         mockRestaurantRepository()
         mockMenuItemRepository()
+        mockReviewRespository()
 
         restaurantService = RestaurantService(
-                restaurantRepository, menuItemRepository)
+                restaurantRepository, menuItemRepository, reviewRepository)
     }
 
     private fun mockRestaurantRepository() {
@@ -55,6 +61,19 @@ internal class RestaurantServiceTest {
                 .willReturn(menuItems)
     }
 
+    private fun mockReviewRespository() {
+        val reviews = arrayListOf<Review>()
+
+        reviews.add(Review.Builder()
+                .name("BeRyong")
+                .score(1)
+                .description("Bad")
+                .build())
+
+        given(reviewRepository.findAllByRestaurantId(1004))
+                .willReturn(reviews)
+    }
+
     @Test
     fun getRestaurants() {
         val restaurants = restaurantService.getRestaurants()
@@ -66,8 +85,12 @@ internal class RestaurantServiceTest {
     fun getRestaurantWithExisted() {
         val restaurant = restaurantService.getRestaurant(1004)
 
+        verify(menuItemRepository).findAllByRestaurantId(eq(1004))
+        verify(reviewRepository).findAllByRestaurantId(eq(1004))
+
         assertThat(restaurant?.id).isEqualTo(1004)
         assertThat(restaurant?.menuItems?.get(0)?.name).isEqualTo("Kimchi")
+        assertThat(restaurant?.reviews?.get(0)?.description).isEqualTo("Bad")
     }
 
     @Test()

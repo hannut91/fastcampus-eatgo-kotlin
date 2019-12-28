@@ -22,6 +22,11 @@ class Restaurant {
     var menuItems: ArrayList<MenuItem> = arrayListOf()
         set(value) = run { field = ArrayList(value) }
 
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    var reviews: ArrayList<Review> = arrayListOf()
+        set(value) = run { field = ArrayList(value) }
+
     val information
         get() = "$name in $address"
 
