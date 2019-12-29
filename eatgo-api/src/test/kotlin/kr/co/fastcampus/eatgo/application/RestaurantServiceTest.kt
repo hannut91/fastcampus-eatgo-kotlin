@@ -39,11 +39,8 @@ internal class RestaurantServiceTest {
 
     private fun mockRestaurantRepository() {
         val restaurants = arrayListOf<Restaurant>()
-        val restaurant = Restaurant.Builder()
-                .id(1004)
-                .name("Bob zip")
-                .address("Seoul")
-                .build()
+        val restaurant = Restaurant(id = 1004, name = "Bob zip",
+                address = "Seoul")
 
         restaurants.add(restaurant)
 
@@ -55,7 +52,7 @@ internal class RestaurantServiceTest {
 
     private fun mockMenuItemRepository() {
         val menuItems = arrayListOf<MenuItem>()
-        menuItems.add(MenuItem.Builder().name("Kimchi").build())
+        menuItems.add(MenuItem(name = "Kimchi"))
 
         given(menuItemRepository.findAllByRestaurantId(1004))
                 .willReturn(menuItems)
@@ -64,11 +61,7 @@ internal class RestaurantServiceTest {
     private fun mockReviewRespository() {
         val reviews = arrayListOf<Review>()
 
-        reviews.add(Review.Builder()
-                .name("BeRyong")
-                .score(1)
-                .description("Bad")
-                .build())
+        reviews.add(Review(name = "BeRyong", score = 1, description = "Bad"))
 
         given(reviewRepository.findAllByRestaurantId(1004))
                 .willReturn(reviews)
@@ -102,16 +95,9 @@ internal class RestaurantServiceTest {
 
     @Test()
     fun addRestaurant() {
-        val restaurant = Restaurant.Builder()
-                .name("BeRyong")
-                .address("Busan")
-                .build()
+        val restaurant = Restaurant(name = "BeRyong", address = "Busan")
 
-        val saved = Restaurant.Builder()
-                .id(1234)
-                .name("BeRyong")
-                .address("Busan")
-                .build()
+        val saved = Restaurant(id = 1234, name = "BeRyong", address = "Busan")
 
         given(restaurantRepository.save(any())).willReturn(saved)
 
@@ -122,11 +108,8 @@ internal class RestaurantServiceTest {
 
     @Test
     fun updateRestaurant() {
-        val restaurant = Restaurant.Builder()
-                .id(1004)
-                .name("Bob zip")
-                .address("Seoul")
-                .build()
+        val restaurant = Restaurant(id = 1004, name = "Bob zip",
+                address = "Seoul")
 
         given(restaurantRepository.findById(1004))
                 .willReturn(Optional.of(restaurant))

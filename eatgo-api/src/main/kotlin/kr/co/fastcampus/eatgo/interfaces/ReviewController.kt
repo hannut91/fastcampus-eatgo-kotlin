@@ -19,9 +19,10 @@ class ReviewController {
     @PostMapping("/restaurants/{restaurantId}/reviews")
     fun create(
             @PathVariable("restaurantId") restaurantId: Long,
-            @Valid @RequestBody resouce: Review
+            @Valid @RequestBody resource: Review
     ): ResponseEntity<String> {
-        val review = reviewService.addReview(restaurantId, resouce)
+        println(resource.description)
+        val review = reviewService.addReview(restaurantId, resource)
 
         val url = URI("/restaurants/$restaurantId/reviews/${review.id}")
         return ResponseEntity.created(url).body("{}")

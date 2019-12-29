@@ -28,9 +28,9 @@ internal class MenuItemServiceTest {
     fun bulkUpdate() {
         val menuItems = mutableListOf<MenuItem>()
 
-        menuItems.add(MenuItem.Builder().name("Kimchi").build())
-        menuItems.add(MenuItem.Builder().id(12).name("Gukbob").build())
-        menuItems.add(MenuItem.Builder().id(1004).isDestroy(true).build())
+        menuItems.add(MenuItem(name = "Kimchi"))
+        menuItems.add(MenuItem(id = 12, name = "Gukbob"))
+        menuItems.add(MenuItem(id = 1004, isDestroy = true))
 
         menuItemService.bulkUpdate(1, menuItems)
 
