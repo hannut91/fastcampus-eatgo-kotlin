@@ -25,11 +25,8 @@ internal class ReviewServiceTest {
 
     @Test
     fun addReview() {
-        val review = Review.Builder()
-                .name("Yunseok")
-                .score(3)
-                .description("Mat-it-da")
-                .build()
+        val review = Review(name = "Yunseok", score = 3,
+                description = "Mat-it-da")
 
         reviewService.addReview(1004, review)
         verify(reviewRepository).save(any())

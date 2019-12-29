@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test
 internal class RestaurantTests {
     @Test
     fun creation() {
-        val restaurant = Restaurant.Builder().id(1004)
-                .name("Bob zip")
-                .address("Seoul")
-                .build()
+        val restaurant = Restaurant(id = 1004, name = "Bob zip",
+                address = "Seoul")
 
         assertThat(restaurant.id).isEqualTo(1004)
         assertThat(restaurant.name).isEqualTo("Bob zip")
@@ -18,10 +16,8 @@ internal class RestaurantTests {
 
     @Test
     fun information() {
-        val restaurant = Restaurant.Builder().id(1004)
-                .name("Bob zip")
-                .address("Seoul")
-                .build()
+        val restaurant = Restaurant(id = 1004, name = "Bob zip",
+                address = "Seoul")
 
         assertThat(restaurant.information).isEqualTo("Bob zip in Seoul")
     }

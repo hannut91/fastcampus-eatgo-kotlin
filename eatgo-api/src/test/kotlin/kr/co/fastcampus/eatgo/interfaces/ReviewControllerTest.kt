@@ -24,12 +24,8 @@ internal class ReviewControllerTest {
     @Test
     fun createWithValidAttributes() {
         given(reviewServive.addReview(eq(1), any())).willReturn(
-                Review.Builder()
-                        .id(1004)
-                        .name("Yunseok")
-                        .score(3)
-                        .description("Mat-it-da")
-                        .build()
+                Review(id = 1004, name = "Yunseok", score = 3,
+                        description = "Mat-it-da")
         )
 
         mvc.perform(post("/restaurants/1/reviews")

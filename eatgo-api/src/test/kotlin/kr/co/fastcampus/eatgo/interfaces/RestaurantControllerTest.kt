@@ -31,11 +31,10 @@ internal class RestaurantControllerTest {
     fun list() {
         val restaurants = arrayListOf<Restaurant>()
 
-        restaurants.add(Restaurant.Builder()
-                .id(1004)
-                .name("JOKER House")
-                .address("Seoul")
-                .build())
+        restaurants.add(
+                Restaurant(id = 1004, name = "JOKER House",
+                        address = "Seoul")
+        )
 
         given(restaurantService.getRestaurants()).willReturn(restaurants)
 
@@ -51,17 +50,10 @@ internal class RestaurantControllerTest {
 
     @Test
     fun detailWithExisted() {
-        val restaurant = Restaurant.Builder()
-                .id(1004)
-                .name("JOKER House")
-                .address("Seoul")
-                .build()
-        val menuItem = MenuItem.Builder().name("Kimchi").build()
-        val review = Review.Builder()
-                .name("Yunseok")
-                .score(3)
-                .description("Great!")
-                .build()
+        val restaurant = Restaurant(id = 1004, name = "JOKER House",
+                address = "Seoul")
+        val menuItem = MenuItem(name = "Kimchi")
+        val review = Review(name = "Yunseok", score = 3, description = "Great!")
 
         restaurant.menuItems = arrayListOf(menuItem)
         restaurant.reviews = arrayListOf(review)
@@ -99,11 +91,8 @@ internal class RestaurantControllerTest {
         given(restaurantService.addRestaurant(any()))
                 .will { invocation: InvocationOnMock ->
                     val restaurant = invocation.getArgument<Restaurant>(0)
-                    Restaurant.Builder()
-                            .id(1234)
-                            .name(restaurant.name)
-                            .address(restaurant.address)
-                            .build()
+                    Restaurant(id = 1234, name = restaurant.name,
+                            address = restaurant.address)
                 }
 
         mvc.perform(post("/restaurants")
