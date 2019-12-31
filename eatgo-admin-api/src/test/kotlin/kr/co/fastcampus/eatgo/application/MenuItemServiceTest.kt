@@ -29,7 +29,7 @@ internal class MenuItemServiceTest {
 
         given(menuItemRepository.findAllByRestaurantId(1004))
                 .willReturn(mockMenuItems)
-        
+
         val menuItems = menuItemService.getMenuItems(1004)
 
         assertThat(menuItems[0].name).isEqualTo("Kimchi")
