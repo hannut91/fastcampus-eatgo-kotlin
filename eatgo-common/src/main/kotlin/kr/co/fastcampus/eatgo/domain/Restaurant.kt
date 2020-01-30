@@ -5,12 +5,16 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @Entity
 class Restaurant(
         @Id
         @GeneratedValue
         var id: Long = 0,
+
+        @field:NotNull
+        var categoryId: Long = 0,
 
         @field:NotEmpty
         var name: String = "",
