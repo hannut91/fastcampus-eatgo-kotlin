@@ -44,7 +44,9 @@ internal class RestaurantServiceTest {
 
         restaurants.add(restaurant)
 
-        given(restaurantRepository.findAll()).willReturn(restaurants)
+        given(restaurantRepository
+                .findAllByAddressContainingAndCategoryId("Seoul", 1))
+                .willReturn(restaurants)
 
         given(restaurantRepository.findById(1004))
                 .willReturn(Optional.of(restaurant))
@@ -69,7 +71,8 @@ internal class RestaurantServiceTest {
 
     @Test
     fun getRestaurants() {
-        val restaurants = restaurantService.getRestaurants()
+        val categoryId = 1L
+        val restaurants = restaurantService.getRestaurants("Seoul", categoryId)
 
         assertThat(restaurants[0].id).isEqualTo(1004)
     }

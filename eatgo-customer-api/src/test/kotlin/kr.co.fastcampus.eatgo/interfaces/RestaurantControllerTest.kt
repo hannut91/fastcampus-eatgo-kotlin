@@ -29,13 +29,14 @@ internal class RestaurantControllerTest {
         val restaurants = arrayListOf<Restaurant>()
 
         restaurants.add(
-                Restaurant(id = 1004, name = "JOKER House",
+                Restaurant(id = 1004, categoryId = 1, name = "JOKER House",
                         address = "Seoul")
         )
 
-        given(restaurantService.getRestaurants()).willReturn(restaurants)
+        given(restaurantService.getRestaurants("Seoul", 1))
+                .willReturn(restaurants)
 
-        mvc.perform(get("/restaurants"))
+        mvc.perform(get("/restaurants?region=Seoul&category=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         containsString("\"id\":1004")
@@ -47,8 +48,8 @@ internal class RestaurantControllerTest {
 
     @Test
     fun detailWithExisted() {
-        val restaurant = Restaurant(id = 1004, name = "JOKER House",
-                address = "Seoul")
+        val restaurant = Restaurant(id = 1004, categoryId = 1,
+                name = "JOKER House", address = "Seoul")
         val menuItem = MenuItem(name = "Kimchi")
         val review = Review(name = "Yunseok", score = 3, description = "Great!")
 

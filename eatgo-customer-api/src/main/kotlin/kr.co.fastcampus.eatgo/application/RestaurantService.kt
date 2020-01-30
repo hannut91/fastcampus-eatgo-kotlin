@@ -33,7 +33,9 @@ class RestaurantService {
         return restaurant
     }
 
-    fun getRestaurants(): ArrayList<Restaurant> = restaurantRepository.findAll()
+    fun getRestaurants(region: String, categoryId: Long) =
+            restaurantRepository
+                    .findAllByAddressContainingAndCategoryId(region, categoryId)
 
     fun addRestaurant(restaurant: Restaurant) =
             restaurantRepository.save(restaurant)
