@@ -17,6 +17,8 @@ class User(
         @field:NotEmpty
         var name: String = "",
 
+        var password: String = "",
+
         var level: Long = 0
 ) {
     val isAdmin: Boolean
