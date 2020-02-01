@@ -13,6 +13,7 @@ class UserService(
         private val userRepoistory: UserRepository
 ) {
     fun getUsers() = userRepoistory.findAll()
+    
     fun addUser(email: String, name: String): User {
         val user = User(email = email, name = name, level = 1)
         return userRepoistory.save(user)
