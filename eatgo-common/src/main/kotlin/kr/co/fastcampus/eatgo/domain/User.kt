@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -30,4 +31,8 @@ class User(
     fun deactivate() {
         level = 0
     }
+
+    @JsonIgnore
+    fun getAccessToken() =
+            if (password.isEmpty()) "" else password.substring(0, 10)
 }
