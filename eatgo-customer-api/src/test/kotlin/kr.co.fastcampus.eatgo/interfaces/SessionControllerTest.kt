@@ -7,6 +7,8 @@ import kr.co.fastcampus.eatgo.application.EmailNotExistedException
 import kr.co.fastcampus.eatgo.application.PasswordWrongException
 import kr.co.fastcampus.eatgo.application.UserService
 import kr.co.fastcampus.eatgo.domain.User
+import kr.co.fastcampus.eatgo.utils.JwtUtil
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -17,21 +19,30 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest(SessionController::class)
-internal class SessionControllerTest {
+class SessionControllerTest {
 
     @Autowired
-    lateinit var mvc: MockMvc
+    private lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var userService: UserService
+    private lateinit var userService: UserService
+
+    @MockBean
+    private lateinit var jwtUtil: JwtUtil
 
     @Test
     fun createWithValidAttributes() {
+        val id = 1004L
         val email = "tester@example.com"
         val password = "test"
+        val name = "John"
 
-        val mockUser = User(email = email, password = "ACCESS_TOKEN")
+        val mockUser = User(email = email, id = id, name = name,
+                password = "ACCESS_TOKEN")
         given(userService.authenticate(email, password)).willReturn(mockUser)
+
+        given(jwtUtil.createToken(id, name))
+                .willReturn("header.payload.signature")
 
         mvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -39,8 +50,8 @@ internal class SessionControllerTest {
                         "\"password\": \"test\"}"))
                 .andExpect(status().isCreated)
                 .andExpect(header().string("location", "/session"))
-                .andExpect(content()
-                        .string("{\"accessToken\":\"ACCESS_TOK\"}"))
+                .andExpect(content().string(containsString(
+                        "{\"accessToken\":\"header.payload.signature\"")))
 
         verify(userService).authenticate(eq(email), eq(password))
     }

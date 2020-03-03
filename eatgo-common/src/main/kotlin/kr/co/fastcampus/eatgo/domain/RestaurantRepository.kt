@@ -4,9 +4,9 @@ import org.springframework.data.repository.CrudRepository
 import java.util.*
 
 interface RestaurantRepository : CrudRepository<Restaurant, Long> {
-    
-    override fun findAll(): ArrayList<Restaurant>
 
+    override fun findAll(): ArrayList<Restaurant>
+    
     fun findAllByAddressContainingAndCategoryId(
             region: String,
             categoryId: Long
