@@ -17,18 +17,4 @@ internal class UserTests {
 
         assertThat(user.isActive).isEqualTo(false)
     }
-
-    @Test
-    fun accessTokenWithPassword() {
-        val user = User(password = "ACCESS_TOKEN")
-
-        assertThat(user.getAccessToken()).isEqualTo("ACCESS_TOK")
-    }
-
-    @Test
-    fun accessTokenWithoutPassword() {
-        val user = User()
-
-        assertThat(user.getAccessToken()).isEqualTo("")
-    }
 }

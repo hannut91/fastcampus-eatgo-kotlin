@@ -26,16 +26,24 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    implementation("io.jsonwebtoken:jjwt-api:0.11.0")
+    runtime("io.jsonwebtoken:jjwt-impl:0.11.0")
+    runtime("io.jsonwebtoken:jjwt-jackson:0.11.0")
+
     implementation("com.h2database:h2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testCompile("org.assertj:assertj-core:3.11.1")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
 }
 
 tasks.withType<Test> {

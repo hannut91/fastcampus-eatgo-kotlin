@@ -10,6 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @Configuration
 @EnableWebSecurity
 class SecurityConfig : WebSecurityConfigurerAdapter() {
+//
+//    @Value("${jwt.secret}")
+//    private lateinit var secret: String
+
     override fun configure(http: HttpSecurity?) {
         http?.let {
             it.cors().disable()
@@ -21,4 +25,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
+//
+//    @Bean
+//    fun jwtUtil() = JwtUtil(secret)
 }
