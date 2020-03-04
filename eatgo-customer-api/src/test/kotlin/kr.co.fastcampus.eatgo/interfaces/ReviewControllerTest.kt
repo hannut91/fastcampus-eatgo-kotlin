@@ -23,19 +23,22 @@ internal class ReviewControllerTest {
 
     @Test
     fun createWithValidAttributes() {
-        given(reviewServive.addReview(eq(1), any())).willReturn(
-                Review(id = 1004, name = "Yunseok", score = 3,
-                        description = "Mat-it-da")
-        )
+        val token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A"
+
+        given(reviewServive.addReview(1L, "John", 3, "Mat-it-da"))
+                .willReturn(Review(id = 1004, name = "John", score = 3,
+                        description = "Mat-it-da"))
 
         mvc.perform(post("/restaurants/1/reviews")
+                .header("Authorization", "Bearer $token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"Yunsok\", \"score\": 3, \"description\": \"Mat-it-da\"}"))
+                .content("{\"score\": 3, \"description\": \"Mat-it-da\"}"))
                 .andExpect(status().isCreated)
                 .andExpect(header().string("location",
                         "/restaurants/1/reviews/1004"))
 
-        verify(reviewServive).addReview(eq(1), any())
+        verify(reviewServive)
+                .addReview(eq(1), eq("John"), eq(3), eq("Mat-it-da"))
     }
 
     @Test
@@ -45,6 +48,6 @@ internal class ReviewControllerTest {
                 .content("{}"))
                 .andExpect(status().isBadRequest)
 
-        verify(reviewServive, never()).addReview(eq(1), any())
+        verify(reviewServive, never()).addReview(any(), any(), any(), any())
     }
 }

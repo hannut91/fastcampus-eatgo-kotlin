@@ -15,7 +15,6 @@ class Review(
 
         var restaurantId: Long = 0,
 
-        @field:NotEmpty
         var name: String = "",
 
         @field:Min(0)

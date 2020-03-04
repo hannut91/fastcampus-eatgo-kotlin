@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.utils
 
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
@@ -22,4 +23,11 @@ class JwtUtil {
                     .claim("name", name)
                     .signWith(key, SignatureAlgorithm.HS256)
                     .compact()
+
+    fun getClaims(token: String): Claims =
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .body
 }
